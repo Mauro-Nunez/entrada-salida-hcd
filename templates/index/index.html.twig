@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="card">
+		<h5 class="card-header">Ingresos</h5>
+		<div class="card-body">
+			<div class="row">
+				<div class="col">
+                </div>
+                <div class="col">
+				</div>
+                <div class="col">
+                </div>
+                <div class="col">
+				
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>DNI</th>
+							<th>Nombre</th>
+							<th>Motivo</th>
+							<th>Ingreso</th>
+							<th>Egreso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registroshoy %}
+							<tr>
+								<td></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="card">
+		<h5 class="card-header">Egresos</h5>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>DNI</th>
+							<th>Nombre</th>
+							<th>Motivo</th>
+							<th>Ingreso</th>
+							<th>Egreso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registroshoy %}
+							<tr>
+								<td></td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

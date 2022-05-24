@@ -1,0 +1,30 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+puerta:
+    path: /puerta
+    controller: App\Controller\PuertaController::index
+
+egresar_registro:
+    path: /puerta/egresar/{id}
+    controller: App\Controller\PuertaController::egresar    
+
+eliminar_registro:
+    path: /puerta/eliminar/{id}
+    controller: App\Controller\PuertaController::eliminar     
+
+
+
+
+estacionamiento:
+    path: /estacionamiento
+    controller: App\Controller\EstacionamientoController::index
+
+estacionamiento_egresar_registro:
+    path: /estacionamiento/egresar/{id}
+    controller: App\Controller\EstacionamientoController::egresar    
+
+estacionamiento_eliminar_registro:
+    path: /estacionamiento/eliminar/{id}
+    controller: App\Controller\EstacionamientoController::eliminar     

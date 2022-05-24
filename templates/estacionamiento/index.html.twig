@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Entrada Estacionamiento {% endblock %}
+
+{% block body %}
+
+<div style="background:#D6DBDF">
+
+
+	<div class="row g-3 border" >
+		<div class="col-sm">	
+		<img width="248" height="74" src="https://i0.wp.com/hcdposadas.gob.ar/wp-content/uploads/2022/01/logo-HCD-248x74-1.png?fit=248%2C74&amp;ssl=1" class="custom-logo" alt="HCD Posadas">
+		</div>
+		<div class="col-sm-7" align="center";>
+			<h1 class="card-title" style="font-size:3vw">Entrada Estacionamiento</h1>
+		</div>
+
+		<div class="col-sm" style="padding:2%" align="right";>
+			<div class="btn-group dropstart" role="group">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+					<i class="fas fa-user-circle"></i>
+					Nombre Usuario
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+					<li><button class="dropdown-item" type="button" href="#">Opción 1</button></li>
+					<li><button class="dropdown-item" type="button" href="#">Opción 2</button></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><button class="dropdown-item" type="button" href="#">Salir</button></li>
+				</ul>
+			</div>
+		</div>
+		
+
+
+	</div>
+</div>
+
+
+
+
+
+
+
+<div style="background:#e9ecef; padding-top:2%; padding-bottom:2%">
+
+
+	<div class="card" style="margin:2%">
+		<h5 class="card-header" style="background:#82E0AA">Ingresos</h5>
+		<div class="card-body">
+
+			{{form_start(form)}}
+
+			<div class="row g-3" style="margin-bottom:2%">
+				<div class="col-sm-2">	
+				{{form_row(form.dni,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-3">
+				{{form_row(form.nombre,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-2">
+				{{form_row(form.patente,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-4">
+				{{form_row(form.motivo,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-1" style="padding-top:2%" > 
+				<button type="submit" class="btn btn-success"> <i class="fas fa-sign-in-alt"></i>  </button>
+				{# {{ form_row(form.submit, { 'label': 'Ingresar','attr': {'class': 'btn btn-success mx-auto'} }) }} #}
+				{{form_end(form, {'render_rest': false})}}
+
+				</div>
+			</div>
+
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+
+							<th style="width:10%">DNI</th>
+							<th style="width:25%">Nombre</th>
+							<th style="width:10%">Patente</th>
+							<th>Motivo</th>
+							<th style="width:10%">Ingreso</th>
+							<th style="width:10%">Acciones</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registroshoy %}
+							{% if registro.egreso == null and registro.patente != null %}
+							<tr>
+
+								<td>{{registro.dni}}</td>
+								<td>{{registro.nombre}}</td>
+								<td>{{registro.patente}}</td>
+								<td>{{registro.motivo}}</td>
+								<td>{{registro.fecha|date("H:i", "America/Argentina/Buenos_Aires")}}</td>
+								<td>
+								<a href="{{ path('estacionamiento_egresar_registro',{'id':registro.id}) }}"><button type="button" class="btn btn-primary"  > <i class="fas fa-sign-out-alt"></i>  </button> </a>
+								<a href="{{ path('estacionamiento_eliminar_registro',{'id':registro.id}) }}"><button type="button" class="btn btn-danger" > <i class="fas fa-trash"></i> </button></a>
+
+								</td>
+							</tr>
+							{% endif %}
+						{% endfor %} 
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="card" style="margin:2%">
+
+		<h5 class="card-header" style="background:#85C1E9">Egresos</h5>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+
+							<th style="width:10%">DNI</th>
+							<th style="width:25%">Nombre</th>
+							<th style="width:10%">Patente</th>
+							<th>Motivo</th>
+							<th style="width:10%">Ingreso</th>
+							<th style="width:10%">Egreso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registroshoy %}
+						{% if registro.egreso != null and registro.patente !=null %}
+							<tr>
+								<td>{{registro.dni}}</td>
+								<td>{{registro.nombre}}</td>
+								<td>{{registro.patente}}</td>
+								<td>{{registro.motivo}}</td>
+								<td>{{registro.fecha|date("H:i", "America/Argentina/Buenos_Aires")}}</td>
+								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+							</tr>
+						{% endif %}		
+						{% endfor %} 
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
