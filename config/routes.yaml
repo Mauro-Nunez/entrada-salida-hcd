@@ -28,3 +28,7 @@ estacionamiento_egresar_registro:
 estacionamiento_eliminar_registro:
     path: /estacionamiento/eliminar/{id}
     controller: App\Controller\EstacionamientoController::eliminar     
+
+login:
+    path: /login
+    controller: App\Controller\SecurityController::index
