@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Novedad;
+use App\Form\InformeType;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +16,29 @@ class InformeController extends AbstractController
     /**
      * @Route("/informe", name="app_informe")
      */
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager,Request $request ): Response
     {
-        $registros = $entityManager->getRepository(Novedad::class)->findAll();
+        $form= $this->createForm(InformeType::class);
+
+        $form->handleRequest($request);
+
+		if ($form->isSubmitted()) {
+            $data=$form->getData();
+            $desde=$data['desde'];
+            $hasta=$data['hasta'];
+
+            $registros = $entityManager->getRepository(Novedad::class)->findFecha($desde,$hasta);
+            $busqueda=true;
+        }
+        else{
+            $registros = $entityManager->getRepository(Novedad::class)->findAll();
+            $busqueda=false;
+        }
 
         return $this->render('informe/index.html.twig', [
             'registros' => $registros,
+            'busqueda' => $busqueda,
+            'form'=>$form->createView(),
             'controller_name' => 'InformeController',
         ]);
     }

@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 {% set mes = "now"|date('m/Y') %}
-{% block title %}Visitas Del {{mes}}{% endblock %}
+
+{% block title %}{% if busqueda %}Visitas Del {{mes}}{% else %}Resultados{% endif %}
+{% endblock %}
+
 
 {% block body %}
     <div style="background:#D6DBDF">
@@ -27,6 +30,20 @@
 		</div>
     </div>  
     </div>  
+	<div class='col-md-12'>{{form_start(form)}}
+	<div class='row'>
+	<div class='col-md-2' style='margin-top:1%'>
+	 {{form_row(form.desde,{'attr': {'class': 'col-sm-12'}})}} 
+	 </div>
+	<div class='col-md-2' style='margin-top:1%'>
+	 {{form_row(form.hasta,{'attr': {'class': 'col-sm-12'}})}}
+	 </div>
+	 <div class='col-md-2' style='margin-top:3%' >
+	 {{form_row(form.buscar,{'attr': {'class': 'col-sm-12'}})}}
+	</div>
+	</div>
+	{{form_end(form)}}
+	 </div>
 	<div class="card" style="margin:2%">
 
 		<h5 class="card-header" style="background:#85C1E9">Puertas </h5>
@@ -45,15 +62,28 @@
 						</tr>
 					</thead>
 					<tbody>
-						{% for registro in registros|sort((b, a) => a.egreso <=> b.egreso) %}
-						{% if registro.egreso != null and registro.patente == null  and registro.fecha | date("m/Y") == mes %}
+						{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
+						{% if ( registro.patente == null  and registro.fecha | date("m/Y") == mes and not busqueda)
+						 or ( registro.patente == null and busqueda)
+						 %}
+
 							<tr>
 								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
 								<td>{{registro.nombre|title}}</td>
 								<td>{{registro.motivo}}</td>
-								<td>{{registro.concejal}}{{registro.comision}}</td>
+								<td>{{registro.concejal}}
+								{% if registro.concejal and registro.comision %} 
+								/ 
+								{% endif %}
+								{{registro.comision}}</td>
 								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
-								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+								<td>
+								{% if registro.egreso %}
+								{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+								{% else %}
+								--
+								{% endif %}
+								</td>
 							</tr>
 						{% endif %}
 						{% endfor %} 
@@ -77,20 +107,32 @@
 							<th style="width:25%">Nombre</th>
 							<th style="width:10%">Patente</th>
 							<th>Motivo</th>
+							<th style="width:20%">Concejal/Comision</th>
 							<th style="width:10%">Ingreso</th>
 							<th style="width:10%">Egreso</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for registro in registros|sort((b, a) => a.egreso <=> b.egreso) %}
-						{% if registro.egreso != null and registro.patente !=null and registro.fecha | date("m/Y") == mes %}
+						{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
+						{% if (registro.patente !=null and registro.fecha | date("m/Y") == mes and not busqueda) or (registro.patente !=null and registro.fecha | date("m/Y") == mes and  busqueda) %}
 							<tr>
 								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
 								<td>{{registro.nombre|title}}</td>
 								<td>{{registro.patente|upper}}</td>
 								<td>{{registro.motivo}}</td>
+								<td>{{registro.concejal}}
+								{% if registro.concejal and registro.comision %} 
+								/ 
+								{% endif %}
+								{{registro.comision}}</td>
 								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
-								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+								<td>
+								{% if registro.egreso %}
+								{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+								{% else %}
+								--
+								{% endif %}
+								</td>
 							</tr>
 						{% endif %}		
 						{% endfor %} 

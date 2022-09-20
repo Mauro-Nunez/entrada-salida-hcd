@@ -39,6 +39,17 @@ class NovedadRepository extends ServiceEntityRepository
         }
     }
 
+        public function findFecha($desde,$hasta): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.fecha >= :des and n.fecha <= :has')
+            ->setParameter('des', $desde)
+            ->setParameter('has', $hasta)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Novedad[] Returns an array of Novedad objects
 //     */
