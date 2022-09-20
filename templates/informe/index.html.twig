@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% set mes = "now"|date('m/Y') %}
+{% block title %}Visitas Del {{mes}}{% endblock %}
+
+{% block body %}
+    <div style="background:#D6DBDF">
+	<div class="row g-3 border" >
+		<div class="col-sm">	
+		<img width="248" height="74" src="https://i0.wp.com/hcdposadas.gob.ar/wp-content/uploads/2022/01/logo-HCD-248x74-1.png?fit=248%2C74&amp;ssl=1" class="custom-logo" alt="HCD Posadas">
+		</div>
+		<div class="col-sm-7" align="center";>
+			<h1 class="card-title" style="font-size:3vw">Visitas Del {{mes}}</h1>
+		</div>
+        		<div class="col-sm" style="padding:2%" align="right";>
+			<div class="btn-group dropstart" role="group">
+				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+					<i class="fas fa-user-circle"></i>
+					Nombre Usuario
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+					<li><button class="dropdown-item" type="button" href="#">Opción 1</button></li>
+					<li><button class="dropdown-item" type="button" href="#">Opción 2</button></li>
+					<li><hr class="dropdown-divider"></li>
+					<li><button class="dropdown-item" type="button" href="#">Salir</button></li>
+				</ul>
+			</div>
+		</div>
+    </div>  
+    </div>  
+	<div class="card" style="margin:2%">
+
+		<h5 class="card-header" style="background:#85C1E9">Puertas </h5>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+
+							<th style="width:10%">DNI</th>
+							<th style="width:25%">Nombre</th>
+							<th>Motivo</th>
+							<th style="width:20%">Concejal/Comision</th>
+							<th style="width:10%">Ingreso</th>
+							<th style="width:10%">Egreso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registros|sort((b, a) => a.egreso <=> b.egreso) %}
+						{% if registro.egreso != null and registro.patente == null  and registro.fecha | date("m/Y") == mes %}
+							<tr>
+								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+								<td>{{registro.nombre|title}}</td>
+								<td>{{registro.motivo}}</td>
+								<td>{{registro.concejal}}{{registro.comision}}</td>
+								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+							</tr>
+						{% endif %}
+						{% endfor %} 
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+    <div class="card" style="margin:2%">
+
+		<h5 class="card-header" style="background:#85C1E9">Estacionamiento</h5>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+
+							<th style="width:10%">DNI</th>
+							<th style="width:25%">Nombre</th>
+							<th style="width:10%">Patente</th>
+							<th>Motivo</th>
+							<th style="width:10%">Ingreso</th>
+							<th style="width:10%">Egreso</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for registro in registros|sort((b, a) => a.egreso <=> b.egreso) %}
+						{% if registro.egreso != null and registro.patente !=null and registro.fecha | date("m/Y") == mes %}
+							<tr>
+								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+								<td>{{registro.nombre|title}}</td>
+								<td>{{registro.patente|upper}}</td>
+								<td>{{registro.motivo}}</td>
+								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+							</tr>
+						{% endif %}		
+						{% endfor %} 
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

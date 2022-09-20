@@ -42,18 +42,23 @@
 	<div class="card" style="margin:2%">
 		<h5 class="card-header" style="background:#82E0AA">Ingresos</h5>
 		<div class="card-body">
-
 			{{form_start(form)}}
 
 			<div class="row g-3" style="margin-bottom:2%">
-				<div class="col-sm-2">	
+				<div class="col-sm-1">	
 				{{form_row(form.dni,{'attr': {'class': 'col-sm-12'}})}}
 				</div>
 				<div class="col-sm-3">
 				{{form_row(form.nombre,{'attr': {'class': 'col-sm-12'}})}}
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-3">
 				{{form_row(form.motivo,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-2">
+				{{form_row(form.concejal,{'attr': {'class': 'col-sm-12'}})}}
+				</div>
+				<div class="col-sm-2">
+				{{form_row(form.comision,{'attr': {'class': 'col-sm-12'}})}}
 				</div>
 				<div class="col-sm-1" style="padding-top:2%" > 
 				<button type="submit" class="btn btn-success" style="bottom:0px"> <i class="fas fa-sign-in-alt"></i>  </button>
@@ -71,19 +76,21 @@
 							<th style="width:10%">DNI</th>
 							<th style="width:25%">Nombre</th>
 							<th>Motivo</th>
+							<th style="width:15%">Concejal/Comision</th>
 							<th style="width:10%">Ingreso</th>
 							<th style="width:20%">Acciones</th>
 
 						</tr>
 					</thead>
 					<tbody>
-						{% for registro in registroshoy %}
-							{% if registro.egreso == null and registro.patente == null %}
+						{% for registro in registroshoy|reverse %}
+							{% if registro.egreso == null and registro.patente == null  and registro.fecha | date("d/m/Y") == "now" | date("d/m/Y") %}
 							<tr>
 
-								<td>{{registro.dni}}</td>
-								<td>{{registro.nombre}}</td>
+								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+								<td>{{registro.nombre|title}}</td>
 								<td>{{registro.motivo}}</td>
+								<td>{{registro.concejal}}{{registro.comision}}</td>
 								<td>{{registro.fecha|date("H:i", "America/Argentina/Buenos_Aires")}}</td>
 								<td>
 								<a href="{{ path('egresar_registro',{'id':registro.id}) }}"><button type="button" class="btn btn-primary"  > <i class="fas fa-sign-out-alt"></i>  </button> </a>
@@ -113,21 +120,23 @@
 							<th style="width:10%">DNI</th>
 							<th style="width:25%">Nombre</th>
 							<th>Motivo</th>
+							<th style="width:20%">Concejal/Comision</th>
 							<th style="width:10%">Ingreso</th>
 							<th style="width:10%">Egreso</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for registro in registroshoy %}
-						{% if registro.egreso != null and registro.patente == null  %}
+						{% for registro in registroshoy|sort((b, a) => a.egreso <=> b.egreso) %}
+						{% if registro.egreso != null and registro.patente == null  and registro.fecha | date("d/m/Y") == "now" | date("d/m/Y") %}
 							<tr>
-								<td>{{registro.dni}}</td>
-								<td>{{registro.nombre}}</td>
+								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+								<td>{{registro.nombre|title}}</td>
 								<td>{{registro.motivo}}</td>
+								<td>{{registro.concejal}}{{registro.comision}}</td>
 								<td>{{registro.fecha|date("H:i", "America/Argentina/Buenos_Aires")}}</td>
 								<td>{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
 							</tr>
-						{% endif %}		
+						{% endif %}
 						{% endfor %} 
 
 					</tbody>

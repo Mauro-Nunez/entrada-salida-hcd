@@ -59,6 +59,16 @@ class Novedad
      */
     private $Egreso;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Comision::class, inversedBy="novedads")
+     */
+    private $comision;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Concejal::class, inversedBy="novedads")
+     */
+    private $concejal;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -156,6 +166,30 @@ class Novedad
     public function setEgreso(?\DateTimeInterface $Egreso): self
     {
         $this->Egreso = $Egreso;
+
+        return $this;
+    }
+
+    public function getComision(): ?Comision
+    {
+        return $this->comision;
+    }
+
+    public function setComision(?Comision $comision): self
+    {
+        $this->comision = $comision;
+
+        return $this;
+    }
+
+    public function getConcejal(): ?concejal
+    {
+        return $this->concejal;
+    }
+
+    public function setConcejal(?concejal $concejal): self
+    {
+        $this->concejal = $concejal;
 
         return $this;
     }
