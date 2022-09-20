@@ -89,6 +89,9 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.12"
     },
+    "knplabs/knp-snappy": {
+        "version": "v1.4.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
@@ -263,6 +266,9 @@
     },
     "symfony/polyfill-uuid": {
         "version": "v1.25.0"
+    },
+    "symfony/process": {
+        "version": "v5.4.11"
     },
     "symfony/property-access": {
         "version": "v5.4.8"
