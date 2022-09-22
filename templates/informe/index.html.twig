@@ -1,52 +1,70 @@
 {% extends 'base.html.twig' %}
 {% set mes = "now"|date('m/Y') %}
 
-{% block title %}{% if busqueda %}Visitas Del {{mes}}{% else %}Resultados{% endif %}
+{% block title %}
+	{% if busqueda %}Visitas Del
+		{{mes}}{% else %}Resultados
+	{% endif %}
 {% endblock %}
 
 
 {% block body %}
-    <div style="background:#D6DBDF">
-	<div class="row g-3 border" >
-		<div class="col-sm">	
-		<img width="248" height="74" src="https://i0.wp.com/hcdposadas.gob.ar/wp-content/uploads/2022/01/logo-HCD-248x74-1.png?fit=248%2C74&amp;ssl=1" class="custom-logo" alt="HCD Posadas">
-		</div>
-		<div class="col-sm-7" align="center";>
-			<h1 class="card-title" style="font-size:3vw">Visitas Del {{mes}}</h1>
-		</div>
-        		<div class="col-sm" style="padding:2%" align="right";>
-			<div class="btn-group dropstart" role="group">
-				<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
-					<i class="fas fa-user-circle"></i>
-					Nombre Usuario
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-					<li><button class="dropdown-item" type="button" href="#">Opción 1</button></li>
-					<li><button class="dropdown-item" type="button" href="#">Opción 2</button></li>
-					<li><hr class="dropdown-divider"></li>
-					<li><button class="dropdown-item" type="button" href="#">Salir</button></li>
-				</ul>
+	<div style="background:#D6DBDF">
+		<div class="row g-3 border">
+			<div class="col-sm">
+				<img width="248" height="74" src="https://i0.wp.com/hcdposadas.gob.ar/wp-content/uploads/2022/01/logo-HCD-248x74-1.png?fit=248%2C74&amp;ssl=1" class="custom-logo" alt="HCD Posadas">
+			</div>
+			<div class="col-sm-7" align="center" ;>
+				<h1 class="card-title" style="font-size:3vw">Visitas Del
+					{{mes}}</h1>
+			</div>
+			<div class="col-sm" style="padding:2%" align="right" ;>
+				<div class="btn-group dropstart" role="group">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+						<i class="fas fa-user-circle"></i>
+						Nombre Usuario
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						<li>
+							<button class="dropdown-item" type="button" href="#">Opción 1</button>
+						</li>
+						<li>
+							<button class="dropdown-item" type="button" href="#">Opción 2</button>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<button class="dropdown-item" type="button" href="#">Salir</button>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
-    </div>  
-    </div>  
+	</div>
 	<div class='col-md-12'>{{form_start(form)}}
-	<div class='row'>
-	<div class='col-md-2' style='margin-top:1%'>
-	 {{form_row(form.desde,{'attr': {'class': 'col-sm-12'}})}} 
-	 </div>
-	<div class='col-md-2' style='margin-top:1%'>
-	 {{form_row(form.hasta,{'attr': {'class': 'col-sm-12'}})}}
-	 </div>
-	 <div class='col-md-2' style='margin-top:3%' >
-	 {{form_row(form.buscar,{'attr': {'class': 'col-sm-12'}})}}
+		<div class='row'>
+			<div class='col-md-2' style='margin-top:1%'>
+				{{form_row(form.desde,{'attr': {'class': 'col-sm-12'}})}}
+			</div>
+			<div class='col-md-2' style='margin-top:1%'>
+				{{form_row(form.hasta,{'attr': {'class': 'col-sm-12'}})}}
+			</div>
+			<div class='col-md-2' style='margin-top:3%'>
+				{{form_row(form.buscar,{'attr': {'class': 'col-sm-12'}})}}
+			</div>
+			<div class='col-md-2' style='margin-top:3%'>
+				<a href="{{ path('informe_imprimir',{'desde':desde,'hasta':hasta}) }}">
+					<button type="button" class="btn btn-primary">
+						IMPRIMIR
+					</button>
+				</a>
+			</div>
+		</div>
+		{{form_end(form)}}
 	</div>
-	</div>
-	{{form_end(form)}}
-	 </div>
 	<div class="card" style="margin:2%">
 
-		<h5 class="card-header" style="background:#85C1E9">Puertas </h5>
+		<h5 class="card-header" style="background:#85C1E9">Puertas
+		</h5>
 		<div class="card-body">
 			<div class="table-responsive">
 				<table class="table table-hover">
@@ -63,30 +81,30 @@
 					</thead>
 					<tbody>
 						{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
-						{% if ( registro.patente == null  and registro.fecha | date("m/Y") == mes and not busqueda)
+							{% if ( registro.patente == null  and registro.fecha | date("m/Y") == mes and not busqueda)
 						 or ( registro.patente == null and busqueda)
 						 %}
 
-							<tr>
-								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
-								<td>{{registro.nombre|title}}</td>
-								<td>{{registro.motivo}}</td>
-								<td>{{registro.concejal}}
-								{% if registro.concejal and registro.comision %} 
-								/ 
-								{% endif %}
-								{{registro.comision}}</td>
-								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
-								<td>
-								{% if registro.egreso %}
-								{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
-								{% else %}
-								--
-								{% endif %}
-								</td>
-							</tr>
-						{% endif %}
-						{% endfor %} 
+								<tr>
+									<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+									<td>{{registro.nombre|title}}</td>
+									<td>{{registro.motivo}}</td>
+									<td>{{registro.concejal}}
+										{% if registro.concejal and registro.comision %}
+											/
+										{% endif %}
+										{{registro.comision}}</td>
+									<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+									<td>
+										{% if registro.egreso %}
+											{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+										{% else %}
+											--
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
 
 					</tbody>
 				</table>
@@ -94,7 +112,7 @@
 		</div>
 	</div>
 
-    <div class="card" style="margin:2%">
+	<div class="card" style="margin:2%">
 
 		<h5 class="card-header" style="background:#85C1E9">Estacionamiento</h5>
 		<div class="card-body">
@@ -114,28 +132,28 @@
 					</thead>
 					<tbody>
 						{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
-						{% if (registro.patente !=null and registro.fecha | date("m/Y") == mes and not busqueda) or (registro.patente !=null and registro.fecha | date("m/Y") == mes and  busqueda) %}
-							<tr>
-								<td>{{registro.dni|number_format(0, ',', '.')}}</td>
-								<td>{{registro.nombre|title}}</td>
-								<td>{{registro.patente|upper}}</td>
-								<td>{{registro.motivo}}</td>
-								<td>{{registro.concejal}}
-								{% if registro.concejal and registro.comision %} 
-								/ 
-								{% endif %}
-								{{registro.comision}}</td>
-								<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
-								<td>
-								{% if registro.egreso %}
-								{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
-								{% else %}
-								--
-								{% endif %}
-								</td>
-							</tr>
-						{% endif %}		
-						{% endfor %} 
+							{% if (registro.patente !=null and registro.fecha | date("m/Y") == mes and not busqueda) or (registro.patente !=null and registro.fecha | date("m/Y") == mes and  busqueda) %}
+								<tr>
+									<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+									<td>{{registro.nombre|title}}</td>
+									<td>{{registro.patente|upper}}</td>
+									<td>{{registro.motivo}}</td>
+									<td>{{registro.concejal}}
+										{% if registro.concejal and registro.comision %}
+											/
+										{% endif %}
+										{{registro.comision}}</td>
+									<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+									<td>
+										{% if registro.egreso %}
+											{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+										{% else %}
+											--
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+						{% endfor %}
 
 					</tbody>
 				</table>

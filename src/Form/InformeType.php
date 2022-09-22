@@ -23,9 +23,7 @@ class InformeType extends AbstractType
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('buscar', SubmitType::class);
-
-        ;
+            ->add('buscar', SubmitType::class);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
