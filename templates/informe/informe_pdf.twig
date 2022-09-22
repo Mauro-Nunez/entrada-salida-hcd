@@ -3,10 +3,109 @@
 	<div class="page">
 		<div
 			class="center">{# <img
-																				          src="https://www.santafe.gob.ar/assets/standard/images/gob-santafe.png"
-																				        /> #}
+																																          src="https://www.santafe.gob.ar/assets/standard/images/gob-santafe.png"
+																																        /> #}
 		</div>
 		<div class="center" style="left: 50%; width: 100%;">
-			<h1 style="margin: 20px">Informe Desde:{{desde}}
-				Hasta:{{hasta}}</h1>
+			<h3 style="margin: 20px">Informe Desde:{{desde}}
+				Hasta:{{hasta}}</h3>
+		</div>
+		<div class="card" style="margin:2%">
+
+			<h5 class="card-header" style="background:#85C1E9">Puertas
+			</h5>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+
+								<th style="width:10%">DNI</th>
+								<th style="width:25%">Nombre</th>
+								<th>Motivo</th>
+								<th style="width:20%">Concejal/Comision</th>
+								<th style="width:10%">Ingreso</th>
+								<th style="width:10%">Egreso</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
+								{% if ( registro.patente == null  and registro.fecha | date("m/Y") == mes and not busqueda)
+						 or ( registro.patente == null and busqueda)
+						 %}
+
+									<tr>
+										<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+										<td>{{registro.nombre|title}}</td>
+										<td>{{registro.motivo}}</td>
+										<td>{{registro.concejal}}
+											{% if registro.concejal and registro.comision %}
+												/
+											{% endif %}
+											{{registro.comision}}</td>
+										<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+										<td>
+											{% if registro.egreso %}
+												{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+											{% else %}
+												--
+											{% endif %}
+										</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+		<div class="card" style="margin:2%">
+
+			<h5 class="card-header" style="background:#85C1E9">Estacionamiento</h5>
+			<div class="card-body">
+				<div class="table-responsive">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+
+								<th style="width:10%">DNI</th>
+								<th style="width:25%">Nombre</th>
+								<th style="width:10%">Patente</th>
+								<th>Motivo</th>
+								<th style="width:20%">Concejal/Comision</th>
+								<th style="width:10%">Ingreso</th>
+								<th style="width:10%">Egreso</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for registro in registros|sort((b, a) => a.fecha <=> b.fecha) %}
+								{% if (registro.patente !=null and registro.fecha | date("m/Y") == mes and not busqueda) or (registro.patente !=null and registro.fecha | date("m/Y") == mes and  busqueda) %}
+									<tr>
+										<td>{{registro.dni|number_format(0, ',', '.')}}</td>
+										<td>{{registro.nombre|title}}</td>
+										<td>{{registro.patente|upper}}</td>
+										<td>{{registro.motivo}}</td>
+										<td>{{registro.concejal}}
+											{% if registro.concejal and registro.comision %}
+												/
+											{% endif %}
+											{{registro.comision}}</td>
+										<td>{{registro.fecha|date("d/m H:i", "America/Argentina/Buenos_Aires")}}</td>
+										<td>
+											{% if registro.egreso %}
+												{{registro.egreso|date("H:i", "America/Argentina/Buenos_Aires")}}
+											{% else %}
+												--
+											{% endif %}
+										</td>
+									</tr>
+								{% endif %}
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>

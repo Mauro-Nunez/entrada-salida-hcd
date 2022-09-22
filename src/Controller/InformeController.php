@@ -66,18 +66,18 @@ class InformeController extends AbstractController
     public function imprimir_informe(EntityManagerInterface $entityManager,  $desde,  $hasta): Response
     {
 
+        $registros = $entityManager->getRepository(Novedad::class)->findFecha($desde, $hasta);
+
+        $fechaactual = new DateTime('now');
 
         $html = $this->renderView(
             'informe/informe_pdf.twig',
             [
+                'registros' => $registros,
                 'desde' => $desde,
                 'hasta' => $hasta
             ]
         );
-
-        $registros = $entityManager->getRepository(Novedad::class)->findFecha($desde, $hasta);
-
-        $fechaactual = new DateTime('now');
 
         return new PdfResponse(
             $this->knpSnappyPdf->getOutputFromHtml($html),
