@@ -1,22 +1,69 @@
+{# templates/login/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {# ... #}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+
+<div style="background:#D6DBDF;height:100%;width:100%;position:absolute">
+
+
+	<div class="row g-2 border" >
+		<div class="col-sm-3">	
+		<img width="248" height="74" src="https://i0.wp.com/hcdposadas.gob.ar/wp-content/uploads/2022/01/logo-HCD-248x74-1.png?fit=248%2C74&amp;ssl=1" class="custom-logo" alt="HCD Posadas">
+		</div>
+		<div class="col-sm-5" align="center";>
+			
+            
+<div class="card " style="width:50%">
+      <h5 class="card-header">Iniciar Sesión</h5>
+    <div class="card-body login-card-body ">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
     <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+        <div class="input-group mb-3" style="   margin-left: auto; margin-right: auto;">
+        <input type="text" id="username" name="_username" placeholder="Usuario" value="{{ last_username }}"/>
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-user"></span>
+            </div>
+        </div>
+        </div>
+        <div class="input-group mb-3">
+        <input type="password" id="password" placeholder="Contraseña" name="_password"/>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password"/>
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
 
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"/> #}
+            </div>
 
-        <button type="submit">login</button>
+            <input type="hidden" name="_csrf_token"
+                   value="{{ csrf_token('authenticate') }}"
+            >
+            <!-- /.col -->
+            <div class="col-6">
+                <button type="submit" class="btn btn-primary btn-block">Ingresar</button>
+            </div>
+            <!-- /.col -->
+        </div>
     </form>
+    </div>
+	</div>
+
+
+		
+
+
+	</div>
+</div>
+
+
 {% endblock %}
