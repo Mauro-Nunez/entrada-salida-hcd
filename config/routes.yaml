@@ -32,3 +32,7 @@ estacionamiento_eliminar_registro:
 login:
     path: /login
     controller: App\Controller\SecurityController::index
+
+app_logout:
+    path: /logout
+    methods: GET

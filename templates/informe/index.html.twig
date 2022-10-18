@@ -22,18 +22,13 @@
 				<div class="btn-group dropstart" role="group">
 					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
 						<i class="fas fa-user-circle"></i>
-						Nombre Usuario
+						{{app.user.username}}
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
-						<li>
-							<button class="dropdown-item" type="button" href="#">Opción 1</button>
-						</li>
-						<li>
-							<button class="dropdown-item" type="button" href="#">Opción 2</button>
-						</li>
+
 						<li><hr class="dropdown-divider"></li>
 						<li>
-							<button class="dropdown-item" type="button" href="#">Salir</button>
+							<button class="dropdown-item" type="button" href="{{ path('app_logout')}}">Salir</button>
 						</li>
 					</ul>
 				</div>
