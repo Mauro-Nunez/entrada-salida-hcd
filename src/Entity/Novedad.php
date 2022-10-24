@@ -69,6 +69,13 @@ class Novedad
      */
     private $concejal;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="novedads")
+     */
+    private $user;
+
+    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -190,6 +197,18 @@ class Novedad
     public function setConcejal(?concejal $concejal): self
     {
         $this->concejal = $concejal;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

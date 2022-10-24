@@ -10,16 +10,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 class PuertaController extends AbstractController
 {
 
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
 
     public function index(Request $request,EntityManagerInterface $entityManager): Response
     {   
         $registro= new Novedad();
+        $user = $this->security->getUser();
+        $hoy=new \DateTime();
         $form= $this->createForm(NovedadType::class, $registro);
-        $registros= $entityManager->getRepository( Novedad::class )->findAll();
+        $registros= $entityManager->getRepository( Novedad::class )->findBy(['usuario'=>$user,'fecha'=>$hoy]);
         $form->handleRequest($request);
 
 		if ($form->isSubmitted()) {

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Novedad::class, mappedBy="user")
+     */
+    private $novedads;
+
+    public function __construct()
+    {
+        $this->novedads = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -118,5 +130,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Novedad>
+     */
+    public function getNovedads(): Collection
+    {
+        return $this->novedads;
+    }
+
+    public function addNovedad(Novedad $novedad): self
+    {
+        if (!$this->novedads->contains($novedad)) {
+            $this->novedads[] = $novedad;
+            $novedad->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNovedad(Novedad $novedad): self
+    {
+        if ($this->novedads->removeElement($novedad)) {
+            // set the owning side to null (unless already changed)
+            if ($novedad->getUser() === $this) {
+                $novedad->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
